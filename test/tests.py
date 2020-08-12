@@ -15,23 +15,25 @@
 # that they are not ran in isolation but in the order shown and the state of the device is not reset or 
 # altered in between executions (unless preconditions are used).
 tests = [ 
-    
-    # when weight is 70 and above
-    {'description': ' Weight = 70 => PORTB = 0x02',
-    'steps': [ {'inputs': [('PIND', 0x23), ('PINB', 0x00)], 'iterations': 5 } ],
-    'expected': [('PORTB', 0x02)],
+        
+    {'description': ' PINA = 15 => PORTC = 0x3F ',
+    'steps': [ {'inputs': [('PINA', 0x0F)], 'iterations': 5 } ],
+    'expected': [('PORTC', 0x3F)],
     },
 
-    #when weight is between 5 and 70
-    {'description': ' Weight = 50 => PORTB = 0x04',
-    'steps': [ {'inputs': [('PIND', 0x19), ('PINB', 0x00)], 'iterations': 5 } ],
-    'expected': [('PORTB', 0x04)],
+    {'description': ' PINA = 0 => PORTC = 0x40 ',
+    'steps': [ {'inputs': [('PINA', 0x00)], 'iterations': 5 } ],
+    'expected': [('PORTC', 0x40)],
     },
 
-    #when there is no passenger
-    {'description': ' Weight = 4 => PORTB = 0x00',
-    'steps': [ {'inputs': [('PIND', 0x02), ('PINB', 0x00)], 'iterations': 5 } ],
-    'expected': [('PORTB', 0x00)],
+    {'description': ' PINA = 4 => PORTC = 0x70',
+    'steps': [ {'inputs': [('PINA', 0x04)], 'iterations': 5 } ],
+    'expected': [('PORTC', 0x70)],
+    },
+
+    {'description': ' PINA = 0x30 => PORTC = 0xC0',
+    'steps': [ {'inputs': [('PINA', 0x30)], 'iterations': 5 } ],
+    'expected': [('PORTC', 0xC0)],
     },
 
     ]

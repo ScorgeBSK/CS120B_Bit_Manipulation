@@ -1,7 +1,7 @@
 /*	Author: Trung Lam
  *  Partner(s) Name: None 
  *	Lab Section: B22
- *	Assignment: Lab #3  Exercise #3
+ *	Assignment: Lab #3  Exercise #2
  *	Exercise Description: [optional - include for your own benefit]
  *
  *	I acknowledge all content contained herein, excluding template or example
@@ -17,46 +17,40 @@ int main(void) {
 	DDRA = 0x00; PORTA = 0xFF;
 	DDRC = 0xFF; PORTC = 0x00;
     /* Insert your solution below */
-    	while (1) {
-		
-		unsigned char tmpA = PINA & 0x7F;
-		unsigned char tmpC = 0x00;
-		unsigned char fuelSensor = (tmpA & 0x0F);
-
-		if( (tmpA & 0x10) && (tmpA & 0x20) && !(tmpA & 0x40) ){
-			tmpC = (tmpC | 0x80);
-		}	
+    	unsigned char led = 0x00;
 	
-		if(fuelSensor < 0x05){
-			tmpC = (tmpC | 0x40);
-		}
+    while (1) {
 
-		if( (fuelSensor < 0x10) && (fuelSensor > 0x0C) ){
-			tmpC = (tmpC | 0x3F);
-		}
+	unsigned char fuelLevel = PINA & 0x0F;
+	unsigned char fastenSeatbelt = PINA & 0x70;	
 
-		else if( (fuelSensor < 0x0D) && (fuelSensor > 0x09) ){
-			tmpC = (tmpC | 0x3E);
-		}
+	if(fuelLevel == 0x01 || fuelLevel == 0x02) {
+		led = (led & 0x00) | 0x60;
+	}
+	else if(fuelLevel == 0x03 || fuelLevel == 0x04) {
+		led = (led & 0x00) | 0x70;
+	}
+	else if(fuelLevel == 0x05 || fuelLevel == 0x06){
+		led = (led & 0x00) | 0x38;
+	}
+	else if(fuelLevel == 0x07 || fuelLevel == 0x08 || fuelLevel == 0x09){
+		led = (led & 0x00) | 0x3C;
+	}
+	else if(fuelLevel == 0x0A || fuelLevel == 0x0B || fuelLevel == 0x0C){
+		led = (led & 0x00) | 0x3E;
+	}
+	else if(fuelLevel == 0x0D || fuelLevel == 0x0E || fuelLevel == 0x0F){
+		led = (led & 0x00) | 0x3F;
+	}
+	else{
+		led = (led & 0x00) | 0x40;
+	}
 
-		else if( (fuelSensor < 0x0A) && (fuelSensor > 0x06) ){
-			tmpC = (tmpC | 0x3C);
-		}
+	if(fastenSeatbelt == 0x30){
+		led = led | 0x80;
+	}
 
-		else if( (fuelSensor < 0x07) && (fuelSensor > 0x04) ){
-			tmpC = (tmpC | 0x38);
-		}	
-
-		else if( (fuelSensor == 0x03) || (fuelSensor == 0x04) ){
-			tmpC = (tmpC | 0x30);
-		}
-
-		else if( (fuelSensor == 0x01) || (fuelSensor == 0x02)) {
-			tmpC = (tmpC | 0x20);
-		}
-
-		PORTC = tmpC;
-
-    	}	
+	PORTC = led;
+    }
     	return 1;
 }

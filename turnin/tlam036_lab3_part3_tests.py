@@ -15,9 +15,7 @@
 # that they are not ran in isolation but in the order shown and the state of the device is not reset or 
 # altered in between executions (unless preconditions are used).
 tests = [ 
-     
-    #tests for fuel sensor
-
+        
     {'description': ' PINA = 15 => PORTC = 0x3F ',
     'steps': [ {'inputs': [('PINA', 0x0F)], 'iterations': 5 } ],
     'expected': [('PORTC', 0x3F)],
@@ -33,18 +31,9 @@ tests = [
     'expected': [('PORTC', 0x70)],
     },
 
-    #tests for fasten seatbelt icon
-
-    #no seatbelt on
-    {'description': ' PINA = 0x34 => PORTC = 0x70',
-    'steps': [ {'inputs': [('PINA', 0x34)], 'iterations': 5 } ],
-    'expected': [('PORTC', 0xF0)],
-    },
-
-    #seatbelts on
-    {'description': ' PINA = 0x74 => PORTC = 0x70',
-    'steps': [ {'inputs': [('PINA', 0x74)], 'iterations': 5 } ],
-    'expected': [('PORTC', 0x70)],
+    {'description': ' PINA = 0x30 => PORTC = 0xC0',
+    'steps': [ {'inputs': [('PINA', 0x30)], 'iterations': 5 } ],
+    'expected': [('PORTC', 0xC0)],
     },
 
     ]

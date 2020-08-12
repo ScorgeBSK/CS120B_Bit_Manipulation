@@ -1,7 +1,7 @@
 /*	Author: Trung Lam
  *  Partner(s) Name: None 
  *	Lab Section: B22
- *	Assignment: Lab #3  Exercise #4
+ *	Assignment: Lab #3  Exercise #2
  *	Exercise Description: [optional - include for your own benefit]
  *
  *	I acknowledge all content contained herein, excluding template or example
@@ -13,29 +13,44 @@
 #endif
 
 int main(void) {
-	/* Insert DDR and PORT initializations */
-    	DDRD = 0x00; PORTD = 0xFF;
-	DDRB = 0xFE; PORTB = 0x00;
+    /* Insert DDR and PORT initializations */
+	DDRA = 0x00; PORTA = 0xFF;
+	DDRC = 0xFF; PORTC = 0x00;
+    /* Insert your solution below */
+    	unsigned char led = 0x00;
+	
+    while (1) {
 
-	/* Insert your solution below */
-    	while (1) {	
+	unsigned char fuelLevel = PINA & 0x0F;
+	unsigned char fastenSeatbelt = PINA & 0x70;	
 
-		unsigned char dInput = PIND & 0xFF;
-		unsigned char bInput = PINB & 0x01;
-		unsigned char airbagSensor = 0x00;
-		unsigned short weight = ((dInput << 1) | bInput);
+	if(fuelLevel == 0x01 || fuelLevel == 0x02) {
+		led = (led & 0x00) | 0x60;
+	}
+	else if(fuelLevel == 0x03 || fuelLevel == 0x04) {
+		led = (led & 0x00) | 0x70;
+	}
+	else if(fuelLevel == 0x05 || fuelLevel == 0x06){
+		led = (led & 0x00) | 0x38;
+	}
+	else if(fuelLevel == 0x07 || fuelLevel == 0x08 || fuelLevel == 0x09){
+		led = (led & 0x00) | 0x3C;
+	}
+	else if(fuelLevel == 0x0A || fuelLevel == 0x0B || fuelLevel == 0x0C){
+		led = (led & 0x00) | 0x3E;
+	}
+	else if(fuelLevel == 0x0D || fuelLevel == 0x0E || fuelLevel == 0x0F){
+		led = (led & 0x00) | 0x3F;
+	}
+	else{
+		led = (led & 0x00) | 0x40;
+	}
 
-		if(weight > 0x45){
-			airbagSensor = 0x02;
-		}
-		else if( (weight > 0x05) && (weight < 0x46) ){
-			airbagSensor = 0x04;
-		}
-		else{
-			airbagSensor = 0x00;
-		}
+	if(fastenSeatbelt == 0x30){
+		led = led | 0x80;
+	}
 
-		PORTB = airbagSensor;
-    	}	
+	PORTC = led;
+    }
     	return 1;
 }
